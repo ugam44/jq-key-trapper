@@ -1,5 +1,5 @@
-// TODO: 
-// TBD
+// https://github.com/ugam44/jq-key-trapper/
+// Created by Mike Hodges
 
 jQuery.fn.extend({
     keyTrapper: function(options, optional1, optional2) {
