@@ -13,11 +13,12 @@
     <h3>Using AngularJS to build DOM</h3>
     <div ng-app="myApp" ng-controller="myCtrl">
         <div key-trapper ng-repeat="container in containers">
-            <label ng-repeat-start="control in formControls">{{control.name}}</label>
-            <input type="{{control.type}}" id="{{control.id}}" name="{{control.name}}" 
-                value="{{control.value}}" class="{{control.ignore ? 'kt-ignore' : ''}}" />
-                <label>Ignore?<input type="checkbox" class="kt-ignore" ng-model="control.ignore"/></label>
-            <br ng-repeat-end />
+            <div ng-repeat="control in formControls">
+                <label>{{control.name}}</label>
+                <input type="{{control.type}}" id="{{control.id}}" name="{{control.name}}" 
+                    ng-model="control.value" class="{{control.ignore ? 'kt-ignore' : ''}}" />
+                    <label>Ignore?<input type="checkbox" class="kt-ignore" ng-model="control.ignore"/></label>
+            </div>
             
             <button class="kt-action-button" ng-click="sendMessage()">Click Me!</button>
         </div>
