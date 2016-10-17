@@ -3,13 +3,27 @@
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://opensource.keycdn.com/angularjs/1.5.8/angular.min.js"></script>
     <link rel="stylesheet" href="style.css" />
     <script src="script.js"></script>
     <script src="key-trapper.js"></script>
 </head>
 
 <body>
-    <h1>Hello Plunker!</h1>
+    <h3>Using AngularJS to build DOM</h3>
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <div key-trapper ng-repeat="container in containers" class="kt-container">
+            <label ng-repeat-start="control in formControls">{{control.name}}</label>
+            <input type="{{control.type}}" id="{{control.id}}" name="{{control.name}}" 
+                value="{{control.value}}" class="{{control.ignore ? 'kt-ignore' : ''}}" />
+                <label>Ignore?<input type="checkbox" class="kt-ignore" ng-model="control.ignore"/></label>
+            <br ng-repeat-end />
+            
+            <button class="kt-action-button" ng-click="sendMessage()">Click Me!</button>
+        </div>
+    </div>
+
+    <h3>Using Static DOM</h3>
     <form class="kt-container">
         <h2>Form</h2>
         <div>
@@ -26,16 +40,18 @@
                     <option>2</option>
                 </select>
             </div>
+
             X
             <input class="kt-ignore" type="text" id="id3" />
-            <br/>
+            <br />
             <input type="checkbox" value="123" />
         </div>
         <div>
             X
             <textarea type="text" id="id4"></textarea>
+
             X
-            <input type="checkbox" value="123" id="id5" disabled />
+            <input type="checkbox" value="123" id="id5" disabled="" />
         </div>
         <input type="submit" class="kt-action-button" value="Submit" />
     </form>
@@ -55,23 +71,23 @@
                     <option>2</option>
                 </select>
             </div>
+
             X
             <input class="kt-ignore" type="text" id="id3" />
-            <br/>
+            <br />
             <input type="checkbox" value="123" />
         </div>
         <div>
             X
             <textarea type="text" id="id4"></textarea>
+
             X
-            <input type="checkbox" value="123" id="id5" disabled />
+            <input type="checkbox" value="123" id="id5" disabled="" />
         </div>
         <a href="#" class="kt-action-button">Click Here When Finished!</a>
     </div>
-
     <div>
-        <h2>Linked kt-containers w/ outside button</h2>
-        container one
+        <h2>Linked kt-containers w/ outside button</h2> container one
         <div class="kt-container container-one">
             <div>
                 <input type="text" id="id1" />
@@ -87,12 +103,14 @@
                         <option>2</option>
                     </select>
                 </div>
+
                 X
                 <input class="kt-ignore" type="text" id="id3" />
-                <br/>
+                <br />
                 <input type="checkbox" value="123" />
             </div>
         </div>
+
         container two
         <div class="kt-container container-two">
             <div>
@@ -109,16 +127,15 @@
                         <option>2</option>
                     </select>
                 </div>
+
                 X
                 <input class="kt-ignore" type="text" id="id3" />
-                <br/>
+                <br />
                 <input type="checkbox" value="123" />
             </div>
         </div>
         <button id="myBtn" class="button">Click Me!</button>
     </div>
-
-
 </body>
 
 </html>
