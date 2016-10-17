@@ -53,7 +53,7 @@ $(function() {
     $("a.kt-action-button").on("click", function() {
         alert("all done!");
     });
-    $(".kt-container:not(.container-one, .container-two):not([key-trapper])").keyTrapper({
+    $(".kt-container").keyTrapper({
         escape: [27, 123], // enter, f12
         trapKeys: [8, 97], // backspace, numPad1
         onActionButton: function() {
