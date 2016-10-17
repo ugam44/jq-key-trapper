@@ -6,6 +6,9 @@ var app = angular.module("myApp", [])
                 element.keyTrapper({
                     escape: [27, 123], // enter, f12
                     trapKeys: [103, 105], // numPad7, numPad9
+                    onTrapKey: function(trigger, value) {
+                        alert("That key is not allowed!");
+                    },
                     onActionButton: function() {
                         var finished = confirm("Are you sure you want to submit the angular data?");
                         if (finished) {
