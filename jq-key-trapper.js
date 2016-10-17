@@ -87,7 +87,7 @@ jQuery.fn.extend({
                         this.onLastInput();
 
                     } else {
-                        $(this.formInputs[currIndex]).focus();
+                        $(this.formInputs[currIndex]).focus().select();
                     }
                 },
                 onNonWhiteList: function(trigger) {
