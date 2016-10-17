@@ -173,9 +173,12 @@ jQuery.fn.extend({
                 var currValue = "";
 
                 $(this).on("keydown.kt", opts.formInputs.selector, function(event) {
+
                     var keyCode = event.keyCode;
                     if (opts.trapKeys.indexOf(keyCode) > -1) {
-                        //event.preventDefault();
+                        event.preventDefault();
+                        opts.init();
+                        opts.onTrapKey(event.target, currValue);
                     } else if (opts.enter.indexOf(keyCode) > -1) {
                         event.preventDefault();
                     } else if (opts.escape.indexOf(keyCode) > -1) {
@@ -186,12 +189,13 @@ jQuery.fn.extend({
                     var keyCode = event.keyCode;
                     if (opts.trapKeys.indexOf(keyCode) > -1) {
                         event.preventDefault();
-                        opts.onTrapKey(event.target, currValue);
                     } else if (opts.enter.indexOf(keyCode) > -1) {
                         event.preventDefault();
+                        opts.init();
                         opts.onEnter(event.target);
                     } else if (opts.escape.indexOf(keyCode) > -1) {
                         event.preventDefault();
+                        opts.init();
                         opts.onEscape(event.target);
                     }
                     currValue = $(event.target).val();
