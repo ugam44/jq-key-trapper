@@ -125,9 +125,16 @@ jQuery.fn.extend({
                 if (typeof(optional1) === 'undefined' && typeof(optional2) === 'undefined') {
                     // $("selector").keyTrapper("options"); 
                     // get all options for all matched elements
-                    return this.map(function() {
-                        return this.opts;
-                    });
+                    if (this.length > 1) {
+                        return this.map(function () {
+                            return this.opts;
+                        });
+                    }
+                    else {
+                        // if only one item, do not wrap in outer array so we don't have to access
+                        // with [0][0].foo()
+                        return this[0].opts;
+                    }
                 } else if (typeof(optional1) === 'object') {
                     // $("selector").keyTrapper("options", {"optionName1": "setNewValue1", "optionName2": "setNewValue2"}); 
                     // set multiple options for all matched elements
@@ -146,10 +153,20 @@ jQuery.fn.extend({
                 if (typeof(optional1) === 'string') {
                     if (typeof(optional2) === 'undefined') {
                         // $("selector").keyTrapper("option", "optionName"); 
-                        // get the single option value for all matched elements                
-                        return this.map(function() {
-                            return [this.opts[optional1]];
-                        });
+                        // get the single option value for all matched elements 
+                        if (this.length > 1) {
+                            // jQuery .map auto-flattens array of arrays, so if we have multiple items
+                            // in the this context, we have to wrap each item in an outer array that will get
+                            // flattened by $.map, so we can preserve the original array of arrays
+                            return this.map(function () {
+                                return [this.opts[optional1]];
+                            });
+                        }
+                        else {
+                            // if only one item, do not wrap in outer array so we don't have to access
+                            // with [0][0].foo()
+                            return this[0].opts[optional1];
+                        }
                     } else {
                         // $("selector").keyTrapper("option", "optionName", "setNewValue"); 
                         // set single option value for all matched elements
