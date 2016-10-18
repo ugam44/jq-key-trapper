@@ -84,7 +84,7 @@ jQuery.fn.extend({
                     });
                     currIndex++;
                     if (currIndex === this.formInputs.length) {
-                        this.onLastInput();
+                        this.onLastInput(trigger);
 
                     } else {
                         $(this.formInputs[currIndex]).focus().select();
