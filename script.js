@@ -72,7 +72,7 @@ $(function() {
         trapKeys: [8, 97], // backspace, numPad1
         actionButton: null,
         onLastInput: function() {
-            $(".container-two").keyTrapper("option", "formInputs")[0][0].focus();
+            $(".container-two").keyTrapper("option", "formInputs")[0].focus();
         }
     });
     $(".container-two").keyTrapper({
