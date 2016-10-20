@@ -67,7 +67,7 @@ jQuery.fn.extend({
                 container: $(control),
                 init: function() {
                     this.actionButton = getActionButton.call(this.container);
-                    this.formInputs = this.container.find("input:not(:disabled):not([type=button]):not([type=submit]):not([type=reset]):not(.kt-ignore), select:not(.kt-ignore)");
+                    this.formInputs = this.container.find("input:not(:disabled):not([type=button]):not([type=submit]):not([type=reset]):not(.kt-ignore), select:not(:disabled):not(.kt-ignore)");
                     return this;
                 },
                 trapKeys: [],
