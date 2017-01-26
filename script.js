@@ -20,7 +20,6 @@ var app = angular.module("myApp", [])
         };
     })
     .controller("myCtrl", function($scope) {
-        $scope.containers = [1,2,3];
         $scope.formControls = [{
             name: "ctrl1",
             value: "",
@@ -59,6 +58,7 @@ $(function() {
     $(".kt-container").keyTrapper({
         escape: [27, 123], // enter, f12
         trapKeys: [8, 97], // backspace, numPad1
+        previous: [38], // up arrow
         onActionButton: function() {
             var finished = confirm("Are you sure you want to submit the data?");
             if (finished) {
@@ -69,6 +69,7 @@ $(function() {
 
     $(".container-one").keyTrapper({
         escape: [27, 123], // esc, f12
+        enter: [13, 40], // enter, down arrow
         trapKeys: [8, 97], // backspace, numPad1
         actionButton: null,
         onLastInput: function() {

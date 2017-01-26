@@ -2,17 +2,18 @@
 <html>
 
 <head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script src="https://opensource.keycdn.com/angularjs/1.5.8/angular.min.js"></script>
-    <link rel="stylesheet" href="style.css" />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="script.js"></script>
-    <script src="key-trapper.js"></script>
+    <script src="jq-key-trapper.js"></script>
 </head>
 
-<body>
-    <h3>Using AngularJS to build DOM</h3>
+<body class="container">
+    <h2>Using AngularJS to build DOM (key-trapper directive -- trap numpad7 & numpad9)</h2>
     <div ng-app="myApp" ng-controller="myCtrl">
-        <div key-trapper ng-repeat="container in containers">
+        <div key-trapper>
             <div ng-repeat="control in formControls">
                 <label>{{control.name}}</label>
                 <input type="{{control.type}}" id="{{control.id}}" name="{{control.name}}" 
@@ -20,21 +21,22 @@
                     <label>Ignore?<input type="checkbox" class="kt-ignore" ng-model="control.ignore"/></label>
             </div>
             
-            <button class="kt-action-button" ng-click="sendMessage()">Click Me!</button>
+            <button class="kt-action-button btn btn-primary" ng-click="sendMessage()">Button</button>
         </div>
     </div>
 
-    <h3>Using Static DOM</h3>
+    <h2>Using Static DOM (.kt-container -- trap backspace & numpad1 -- up arrow prev)</h2>
     <form class="kt-container">
-        <h2>Form</h2>
+        <h3>Form</h3>
         <div>
-            <input type="text" id="id1" />
+            <label>Control 1</label> <input type="text" id="id1" />
         </div>
         <div>
-            <input type="text" id="id2" />
+            <label>Control 2</label> <input type="text" id="id2" />
         </div>
         <div>
             <div>
+                <label>Control 3</label>
                 <select id="id6">
                     <option>1</option>
                     <option>3</option>
@@ -42,30 +44,32 @@
                 </select>
             </div>
 
-            X
+            <label>Ignore (.kt-ignore)</label>
             <input class="kt-ignore" type="text" id="id3" />
             <br />
-            <input type="checkbox" value="123" />
+            <label>Control 4</label> <input type="checkbox" value="123" />
         </div>
         <div>
-            X
+            <label>Ignore (textarea)</label>
             <textarea type="text" id="id4"></textarea>
+            <br/>
 
-            X
+            <label>Ignore&nbsp; 3 (disabled)</label>
             <input type="checkbox" value="123" id="id5" disabled="" />
         </div>
-        <input type="submit" class="kt-action-button" value="Submit" />
+        <input type="submit" class="kt-action-button btn btn-primary" value="Input type=submit" />
     </form>
     <div class="kt-container">
-        <h2>Div</h2>
+        <h3>Div (.kt-container)</h3>
         <div>
-            <input type="text" id="id1" />
+            <label>Control 1</label> <input type="text" id="id1" />
         </div>
         <div>
-            <input type="text" id="id2" />
+            <label>Control 2</label> <input type="text" id="id2" />
         </div>
         <div>
             <div>
+                <label>Control 3</label>
                 <select id="id6">
                     <option>1</option>
                     <option>3</option>
@@ -73,31 +77,26 @@
                 </select>
             </div>
 
-            X
+            <label>Ignore (.kt-ignore)</label>
             <input class="kt-ignore" type="text" id="id3" />
             <br />
-            <input type="checkbox" value="123" />
+            <label>Control 4</label> <input type="checkbox" value="123" />
         </div>
-        <div>
-            X
-            <textarea type="text" id="id4"></textarea>
-
-            X
-            <input type="checkbox" value="123" id="id5" disabled="" />
-        </div>
-        <a href="#" class="kt-action-button">Click Here When Finished!</a>
+        <a href="#" class="kt-action-button btn btn-primary">a.kt-action-button</a>
     </div>
     <div>
-        <h2>Linked kt-containers w/ outside button</h2> container one
+        <h2>Linked kt-containers w/ outside button</h2>
+        <h3>Container One (custom onLastInput function -- no action button -- enter with enter key & down arrow)</h3>
         <div class="container-one">
             <div>
-                <input type="text" id="id1" />
+                <label>Control 1</label> <input type="text" id="id1" />
             </div>
             <div>
-                <input type="text" id="id2" />
+                <label>Control 2</label> <input type="text" id="id2" />
             </div>
             <div>
                 <div>
+                    <label>Control 3</label>
                     <select id="id6">
                         <option>1</option>
                         <option>3</option>
@@ -105,23 +104,24 @@
                     </select>
                 </div>
 
-                X
+                <label>Ignore (.kt-ignore)</label>
                 <input class="kt-ignore" type="text" id="id3" />
                 <br />
-                <input type="checkbox" value="123" />
+                <label>Control 4</label> <input type="checkbox" value="123" />
             </div>
         </div>
 
-        container two
+        <h3>Container Two (manually defined actionButton)</h3>
         <div class="container-two">
             <div>
-                <input type="text" id="id1" />
+                <label>Control 1</label> <input type="text" id="id1" />
             </div>
             <div>
-                <input type="text" id="id2" />
+                <label>Control 2</label> <input type="text" id="id2" />
             </div>
             <div>
                 <div>
+                    <label>Control 3</label>
                     <select id="id6">
                         <option>1</option>
                         <option>3</option>
@@ -129,13 +129,13 @@
                     </select>
                 </div>
 
-                X
+                <label>Ignore (.kt-ignore)</label>
                 <input class="kt-ignore" type="text" id="id3" />
                 <br />
-                <input type="checkbox" value="123" />
+                <label>Control 4</label> <input type="checkbox" value="123" />
             </div>
         </div>
-        <button id="myBtn" class="button">Click Me!</button>
+        <button id="myBtn" class="button btn btn-primary">Button outside of container</button>
     </div>
 </body>
 

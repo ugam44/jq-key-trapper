@@ -37,11 +37,11 @@ jQuery.fn.extend({
         };
 
         function getActionButton() {
-            var submitButton = options.actionButton || null;
+            var submitButton = options.actionButton || undefined;
             if (!submitButton) {
                 submitButton = this.find(".kt-action-button");
                 if (!submitButton.length) {
-                    submitButton = this.find(".button");
+                    submitButton = this.find(".button, .btn");
                     if (!submitButton.length) {
                         submitButton = this.find("input[type=submit]");
                         if (!submitButton.length) {
@@ -49,7 +49,7 @@ jQuery.fn.extend({
                             if (!submitButton.length) {
                                 submitButton = $(this.find("button")[0]);
                                 if (!submitButton.length) {
-                                    submitButton = null;
+                                    submitButton = undefined;
                                 }
                             }
                         }
@@ -63,7 +63,8 @@ jQuery.fn.extend({
             var control = this;
             var defaults = {
                 escape: [27],
-                enter: [13],
+                next: [13],
+                previous: [],
                 container: $(control),
                 init: function() {
                     this.actionButton = getActionButton.call(this.container);
@@ -74,7 +75,7 @@ jQuery.fn.extend({
                 ignoreKeys: Object.keys(whiteList).map(function(key) {
                     return whiteList[key];
                 }),
-                onEnter: function(trigger) {
+                onNext: function(trigger) {
                     var currIndex = -1;
                     this.formInputs.each(function(index, elem) {
                         if (elem === trigger) {
@@ -83,6 +84,22 @@ jQuery.fn.extend({
                         }
                     });
                     currIndex++;
+                    if (currIndex === this.formInputs.length) {
+                        this.onLastInput(trigger);
+
+                    } else {
+                        $(this.formInputs[currIndex]).focus().select();
+                    }
+                },
+                onPrev: function(trigger) {
+                    var currIndex = -1;
+                    this.formInputs.each(function(index, elem) {
+                        if (elem === trigger) {
+                            currIndex = index;
+                            return false;
+                        }
+                    });
+                    currIndex--;
                     if (currIndex === this.formInputs.length) {
                         this.onLastInput(trigger);
 
@@ -102,7 +119,7 @@ jQuery.fn.extend({
                 },
                 onLastInput: function() {
                     try {
-                        if (this.actionButton !== null && this.actionButton !== undefined) {
+                        if (this.actionButton != undefined) {
                             this.onActionButton();
                         } else {
                             throw Error("actionButton is not defined!");
@@ -190,13 +207,14 @@ jQuery.fn.extend({
                 var currValue = "";
 
                 $(this).on("keydown.kt", opts.formInputs.selector, function(event) {
-
                     var keyCode = event.keyCode;
                     if (opts.trapKeys.indexOf(keyCode) > -1) {
                         event.preventDefault();
                         opts.init();
                         opts.onTrapKey(event.target, currValue);
-                    } else if (opts.enter.indexOf(keyCode) > -1) {
+                    } else if (opts.next.indexOf(keyCode) > -1) {
+                        event.preventDefault();
+                    } else if (opts.previous.indexOf(keyCode) > -1) {
                         event.preventDefault();
                     } else if (opts.escape.indexOf(keyCode) > -1) {
                         event.preventDefault();
@@ -206,10 +224,14 @@ jQuery.fn.extend({
                     var keyCode = event.keyCode;
                     if (opts.trapKeys.indexOf(keyCode) > -1) {
                         event.preventDefault();
-                    } else if (opts.enter.indexOf(keyCode) > -1) {
+                    } else if (opts.next.indexOf(keyCode) > -1) {
                         event.preventDefault();
                         opts.init();
-                        opts.onEnter(event.target);
+                        opts.onNext(event.target);
+                    } else if (opts.previous.indexOf(keyCode) > -1) {
+                        event.preventDefault();
+                        opts.init();
+                        opts.onPrev(event.target);
                     } else if (opts.escape.indexOf(keyCode) > -1) {
                         event.preventDefault();
                         opts.init();
@@ -222,7 +244,7 @@ jQuery.fn.extend({
             // return the original list of elements so you can chain off of .keyTrapper()
             return this;
         } else {
-            console.error("Invalid value: '" + options + "' for param1 in .keyTrapper([string || object]param1, [string || object]param2, [string]param3)");
+            console.error("Invalid value: '" + options + "' for param1 in .keyTrapper([string ||\ object]param1, [string || object]param2, [string]param3)");
             return this;
         }
     }
