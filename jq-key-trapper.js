@@ -110,9 +110,10 @@ jQuery.fn.extend({
                 onNonWhiteList: function(trigger) {
                     // no default action  
                 },
-                onTrapKey: function(trigger, value) {
+                onTrapKey: function(event, prevValue) {
+                    event.preventDefault();
                     alert("That key is not allowed!");
-                    $(trigger).val(value);
+                    $(event.target).val(value);
                 },
                 onEscape: function(trigger) {
                     $(trigger).blur();
@@ -209,9 +210,9 @@ jQuery.fn.extend({
                 $(this).on("keydown.kt", opts.formInputs.selector, function(event) {
                     var keyCode = event.keyCode;
                     if (opts.trapKeys.indexOf(keyCode) > -1) {
-                        event.preventDefault();
+                        // must prevent default in onTrapKey function to prevent key from being registered
                         opts.init();
-                        opts.onTrapKey(event.target, currValue);
+                        opts.onTrapKey(event, currValue);
                     } else if (opts.next.indexOf(keyCode) > -1) {
                         event.preventDefault();
                     } else if (opts.previous.indexOf(keyCode) > -1) {
@@ -244,7 +245,7 @@ jQuery.fn.extend({
             // return the original list of elements so you can chain off of .keyTrapper()
             return this;
         } else {
-            console.error("Invalid value: '" + options + "' for param1 in .keyTrapper([string ||\ object]param1, [string || object]param2, [string]param3)");
+            console.error("Invalid value: '" + options + "' for param1 in .keyTrapper([string || object]param1, [string || object]param2, [string]param3)");
             return this;
         }
     }

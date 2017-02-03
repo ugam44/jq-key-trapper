@@ -1,2 +1,2 @@
 # jq-key-trapper
-Customizable field navigation &amp; actions based on key presses
+Customizable field-to-field navigation &amp; actions based on key presses
