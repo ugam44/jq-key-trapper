@@ -8,7 +8,7 @@ var app = angular.module("myApp", [])
                     trapKeys: [103, 105], // numPad7, numPad9
                     onTrapKey: function(event, prevValue) {
                         event.preventDefault();
-                        alert("That key is not allowed!");
+                        alert("That key is not allowed, fool!");
                     },
                     onActionButton: function() {
                         var finished = confirm("Are you sure you want to submit the angular data?");
@@ -57,7 +57,7 @@ $(function() {
         alert("all done!");
     });
     $(".kt-container").keyTrapper({
-        escape: [27, 123], // enter, f12
+        escape: [27, 123], // esc, f12
         trapKeys: [8, 97], // backspace, numPad1
         previous: [38], // up arrow
         onActionButton: function() {
@@ -70,11 +70,19 @@ $(function() {
 
     $(".container-one").keyTrapper({
         escape: [27, 123], // esc, f12
-        enter: [13, 40], // enter, down arrow
+        next: [40], // enter, down arrow
         trapKeys: [8, 97], // backspace, numPad1
         actionButton: null,
         onLastInput: function() {
             $(".container-two").keyTrapper("option", "formInputs")[0].focus();
+        },
+        custom: {
+            "save": {
+                keys: [["ctrl", 13]],
+                handler: function (trigger, options) {
+                    options.onLastInput();
+                }
+            }
         }
     });
     $(".container-two").keyTrapper({

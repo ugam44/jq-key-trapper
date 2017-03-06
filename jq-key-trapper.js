@@ -100,10 +100,7 @@ jQuery.fn.extend({
                         }
                     });
                     currIndex--;
-                    if (currIndex === this.formInputs.length) {
-                        this.onLastInput(trigger);
-
-                    } else {
+                    if (currIndex >= 0) {
                         $(this.formInputs[currIndex]).focus().select();
                     }
                 },
@@ -133,9 +130,7 @@ jQuery.fn.extend({
                     this.actionButton.trigger("click");
                 }
             }.init();
-            var optionsToUse = Object.keys(defaults).forEach(function(key) {
-                defaults[key] = options[key] || defaults[key];
-            });
+            $.extend(true, defaults, options);
             return defaults;
         }
         if (typeof(options) === "string") {
@@ -203,6 +198,33 @@ jQuery.fn.extend({
                 return this;
             }
         } else if (typeof(options) === "object") {
+            function checkKeyCodeWithModifiers (keyCode, modifiers, valuesArr) {
+                var activeModifiersCount = Object.keys(modifiers).filter(function (key){
+                    return modifiers[key] === true;
+                }).length;
+                return valuesArr.some(function (elem) {
+                    if (elem === keyCode && activeModifiersCount === 0) {
+                        return true;
+                    }
+                    else if (elem instanceof Array) {
+                        // ensure only the exact modifiers specified are active. i.e. ["shift", 13]
+                        // should not return true if modifiers.shift and modifiers.ctrl are true.
+                        // compare against length - 1 because one element should be a valid keycode
+                        if (activeModifiersCount === (elem.length - 1)) {
+                            var exactMatch = elem.every(function (_elem) {
+                                return _elem === keyCode || modifiers[_elem] === true;
+                            });
+                            return exactMatch;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                    else {
+                        return false;
+                    }
+                });
+            }
             this.each(function() {
                 var opts = this.opts = setDefaults.call(this);
                 var currValue = "";
@@ -223,20 +245,37 @@ jQuery.fn.extend({
                 });
                 $(this).on("keyup.kt", opts.formInputs.selector, function(event) {
                     var keyCode = event.keyCode;
-                    if (opts.trapKeys.indexOf(keyCode) > -1) {
+                    var modifiers = {
+                        shift: event.shiftKey,
+                        ctrl: event.ctrlKey,
+                        alt: event.altKey
+                    };
+                    var isTrapKey = checkKeyCodeWithModifiers(keyCode, modifiers, opts.trapKeys);
+                    var isNextKey = checkKeyCodeWithModifiers(keyCode, modifiers, opts.next);
+                    var isPreviousKey = checkKeyCodeWithModifiers(keyCode, modifiers, opts.previous);
+                    var isEscapeKey = checkKeyCodeWithModifiers(keyCode, modifiers, opts.escape);
+                    if (isTrapKey) {
                         event.preventDefault();
-                    } else if (opts.next.indexOf(keyCode) > -1) {
+                    } else if (isNextKey) {
                         event.preventDefault();
                         opts.init();
                         opts.onNext(event.target);
-                    } else if (opts.previous.indexOf(keyCode) > -1) {
+                    } else if (isPreviousKey) {
                         event.preventDefault();
                         opts.init();
                         opts.onPrev(event.target);
-                    } else if (opts.escape.indexOf(keyCode) > -1) {
+                    } else if (isEscapeKey) {
                         event.preventDefault();
                         opts.init();
                         opts.onEscape(event.target);
+                    }
+                    else if (opts.custom) {
+                        for(var name in opts.custom) {
+                            if (checkKeyCodeWithModifiers(keyCode, modifiers, opts.custom[name].keys)) {
+                                event.preventDefault();
+                                opts.custom[name].handler(event.target, opts);
+                            }
+                        }
                     }
                     currValue = $(event.target).val();
                 });
