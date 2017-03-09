@@ -66,9 +66,10 @@ jQuery.fn.extend({
                 next: [13],
                 previous: [],
                 container: $(control),
+                selector: "input:not(:disabled):not([type=button]):not([type=submit]):not([type=reset]):not(.kt-ignore), select:not(:disabled):not(.kt-ignore)",
                 init: function() {
                     this.actionButton = getActionButton.call(this.container);
-                    this.formInputs = this.container.find("input:not(:disabled):not([type=button]):not([type=submit]):not([type=reset]):not(.kt-ignore), select:not(:disabled):not(.kt-ignore)");
+                    this.formInputs = this.container.find(this.selector);
                     return this;
                 },
                 trapKeys: [],
@@ -228,8 +229,7 @@ jQuery.fn.extend({
             this.each(function() {
                 var opts = this.opts = setDefaults.call(this);
                 var currValue = "";
-
-                $(this).on("keydown.kt", opts.formInputs.selector, function(event) {
+                $(this).on("keydown.kt", opts.selector, function(event) {
                     var keyCode = event.keyCode;
                     if (opts.trapKeys.indexOf(keyCode) > -1) {
                         // must prevent default in onTrapKey function to prevent key from being registered
@@ -243,7 +243,7 @@ jQuery.fn.extend({
                         event.preventDefault();
                     }
                 });
-                $(this).on("keyup.kt", opts.formInputs.selector, function(event) {
+                $(this).on("keyup.kt", opts.selector, function(event) {
                     var keyCode = event.keyCode;
                     var modifiers = {
                         shift: event.shiftKey,
